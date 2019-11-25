@@ -1,1 +1,5 @@
+.failures.txt.swp
+.failures.txt.swo
+expected.txt
+output.txt
 node_modules/
