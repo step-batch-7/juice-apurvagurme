@@ -1,26 +1,11 @@
 const assert = require("assert");
 const lib2 = require("../src/queryOptLib");
-const {
-  employeeRecords,
-  getSumOfQty,
-  countQty,
-  getEmployeeRecord,
-  isOldEmployee
-} = lib2;
-
-describe("getSumOfQty", function() {
-  it("should give sum of quantity with the given argument", function() {
-    assert.strictEqual(getSumOfQty(1, ["11111", "Watermelon", "1"]), 2);
-  });
-});
+const { countQty, getEmployeeRecord, isOldEmployee, getQueryArray } = lib2;
 
 describe("countQty", function() {
   it("should give a sum of quantities of juices", function() {
-    let argument = [
-      ["--query", "--empId", "2"],
-      ["--query", "--empId", "1"]
-    ];
-    assert.deepStrictEqual(countQty(argument), 3);
+    let argument = { "--qty": "3" };
+    assert.deepStrictEqual(countQty(0, argument), 3);
   });
 });
 
@@ -42,17 +27,41 @@ describe("isOldEmployee", function() {
 
 describe("getEmployeeRecord", function() {
   it("should give employee records when empId is given", function() {
-    assert.deepStrictEqual(getEmployeeRecord("11111"), [
-      ["11111", "Orange", "2", "2019-11-20T05:50:28.267Z"],
-      ["11111", "Watermelon", "1", "2019-11-20T05:50:28.267Z"]
-    ]);
+    let fileContents =
+      '{"12345":[{"empId":"12345","--beverage":"Watermelon","--qty":"1","time":"2019-11-20T05:29:47.793Z"}]}';
+
+    let actual = getEmployeeRecord("12345", fileContents);
+    let expected = [
+      {
+        "--beverage": "Watermelon",
+        "--qty": "1",
+        empId: "12345",
+        time: "2019-11-20T05:29:47.793Z"
+      }
+    ];
+    // console.log(actual);
+    // console.log(expected);
+
+    assert.deepStrictEqual(actual, expected);
   });
+  it("should give empty array if empId is not present in previous record", function() {});
+  let fileContents = "{}";
+  let actual = getEmployeeRecord("12345", fileContents);
+  let expected = [];
+  assert.deepStrictEqual(actual, expected);
 });
 
-describe("employeeRecords", function() {
-  it("should give values of the given object consist of empRecords", function() {
-    let date = "2019-11-23T05:30:32.055Z";
-    let argument = { "--beverage": "Orange", "--qty": "1", time: date };
-    assert.deepStrictEqual(employeeRecords(argument), ["Orange", "1", date]);
+describe("getQueryArray", function() {
+  it("should give the older transaction history of the given employee", function() {
+    let actual = getQueryArray(
+      [["11111", "Orange", "3", "2019-11-20T05:29:47.793Z"]],
+      3
+    );
+    let expected = [
+      ["Employee ID", " " + "Beverage", " " + "Quantity", " " + "Date"],
+      ["11111", "Orange", "3", "2019-11-20T05:29:47.793Z"],
+      ["Total:" + " " + 3 + " " + "Juices"]
+    ];
+    assert.deepStrictEqual(actual, expected);
   });
 });

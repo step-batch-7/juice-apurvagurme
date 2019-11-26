@@ -1,3 +1,5 @@
+failures.txt
+.nyc_output/
 .failures.txt.swp
 .failures.txt.swo
 expected.txt

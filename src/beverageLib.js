@@ -1,7 +1,8 @@
 const fs = require("fs");
-let contents = fs.readFileSync("./records.json", "utf8");
 const queryLib = require("./queryOptLib");
 const { getEmployeeRecord, getQueryArray, countQty } = queryLib;
+const saveOptLib = require("./saveOptLib");
+const { saveEmpRecord, getSaveArray } = saveOptLib;
 
 const convertArrayToObj = function(cmdLineArgs) {
   let object = {};
@@ -24,20 +25,36 @@ const getString = function(recordOfTransaction) {
   return records.join("\n");
 };
 
-const getTransactionRecord = function(cmdLineArgsObj) {
+const getTransactionRecord = function(cmdLineArgsObj, date, contents) {
   let recordsOfEmp = [];
   let totalQty = 0;
   if (cmdLineArgsObj["action"] == "--query") {
-    recordsOfEmp = getEmployeeRecord(cmdLineArgsObj["--empId"]);
-    // console.log("hello", recordsOfEmp);
-    totalQty = countQty(recordsOfEmp);
+    recordsOfEmp = getEmployeeRecord(cmdLineArgsObj["--empId"], contents);
+    totalQty = recordsOfEmp.reduce(countQty, 0);
+    recordsOfEmp = recordsOfEmp.map(getListOfDetails);
     recordsOfEmp = getQueryArray(recordsOfEmp, totalQty);
+    // console.log(recordsOfEmp);
   }
   if (cmdLineArgsObj["action"] == "--save") {
+    recordsOfEmp = saveEmpRecord(cmdLineArgsObj, date, contents);
+    recordsOfEmp = getListOfDetails(recordsOfEmp);
+    recordsOfEmp = getSaveArray(recordsOfEmp);
   }
-  return [recordsOfEmp];
+  // console.log(recordsOfEmp);
+
+  return recordsOfEmp;
+};
+
+const getListOfDetails = function(transactionDetailsOfEmp) {
+  return [
+    transactionDetailsOfEmp["--empId"],
+    transactionDetailsOfEmp["--beverage"],
+    transactionDetailsOfEmp["--qty"],
+    transactionDetailsOfEmp["date"]
+  ];
 };
 
 exports.getTransactionRecord = getTransactionRecord;
 exports.getString = getString;
 exports.convertArrayToObj = convertArrayToObj;
+exports.getListOfDetails = getListOfDetails;
