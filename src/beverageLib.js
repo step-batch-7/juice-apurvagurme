@@ -2,7 +2,7 @@ const fs = require("fs");
 const queryLib = require("./queryOptLib");
 const { getEmployeeRecord, getQueryArray, countQty } = queryLib;
 const saveOptLib = require("./saveOptLib");
-const { saveEmpRecord, getSaveArray } = saveOptLib;
+const { saveEmpRecord, getSaveArray, saveRecordToDatabase } = saveOptLib;
 
 const convertArrayToObj = function(cmdLineArgs) {
   let object = {};
@@ -25,7 +25,13 @@ const getString = function(recordOfTransaction) {
   return records.join("\n");
 };
 
-const getTransactionRecord = function(cmdLineArgsObj, date, contents) {
+const getTransactionRecord = function(
+  cmdLineArgsObj,
+  date,
+  contents,
+  funcRef,
+  path
+) {
   let recordsOfEmp = [];
   let totalQty = 0;
   if (cmdLineArgsObj["action"] == "--query") {
@@ -33,15 +39,12 @@ const getTransactionRecord = function(cmdLineArgsObj, date, contents) {
     totalQty = recordsOfEmp.reduce(countQty, 0);
     recordsOfEmp = recordsOfEmp.map(getListOfDetails);
     recordsOfEmp = getQueryArray(recordsOfEmp, totalQty);
-    // console.log(recordsOfEmp);
   }
   if (cmdLineArgsObj["action"] == "--save") {
-    recordsOfEmp = saveEmpRecord(cmdLineArgsObj, date, contents);
+    recordsOfEmp = saveEmpRecord(cmdLineArgsObj, date, contents, funcRef, path);
     recordsOfEmp = getListOfDetails(recordsOfEmp);
     recordsOfEmp = getSaveArray(recordsOfEmp);
   }
-  // console.log(recordsOfEmp);
-
   return recordsOfEmp;
 };
 

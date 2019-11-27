@@ -39,8 +39,6 @@ describe("getEmployeeRecord", function() {
         time: "2019-11-20T05:29:47.793Z"
       }
     ];
-    // console.log(actual);
-    // console.log(expected);
 
     assert.deepStrictEqual(actual, expected);
   });

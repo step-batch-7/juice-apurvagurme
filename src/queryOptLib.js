@@ -10,7 +10,6 @@ const getQueryArray = function(recordsOfEmployee, quantity) {
     " " + "Date"
   ];
   records.unshift(heading);
-  // console.log(records);
 
   return records;
 };
@@ -24,7 +23,6 @@ const getEmployeeRecord = function(empId, contents) {
   let records = [];
   if (isOldEmployee(empId, empRecords)) {
     records = empRecords[empId];
-    console.log(records);
   }
   return records;
 };

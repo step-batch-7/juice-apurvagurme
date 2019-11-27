@@ -16,6 +16,11 @@ describe("getSaveArray", function() {
 
 describe("saveEmpRecord", function() {
   it("should write or save the new transaction details to the file", function() {
+    const saveRecord = function(path) {
+      if (path == "somePath") {
+        return true;
+      }
+    };
     let date = "2019-11-20T05:29:47.793Z";
     let fileContents = "{}";
     let cmdLineArgsObj = {
@@ -24,7 +29,13 @@ describe("saveEmpRecord", function() {
       "--beverage": "Watermelon",
       "--qty": "1"
     };
-    let actual = saveEmpRecord(cmdLineArgsObj, date, fileContents);
+    let actual = saveEmpRecord(
+      cmdLineArgsObj,
+      date,
+      fileContents,
+      saveRecord,
+      "somePath"
+    );
     let expected = {
       "--empId": "11111",
       "--beverage": "Watermelon",

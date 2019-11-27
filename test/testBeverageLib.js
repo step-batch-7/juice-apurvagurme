@@ -40,6 +40,11 @@ describe("getString", function() {
 
 describe("getTransactionRecord", function() {
   it("should give employee records when give task is query", function() {
+    const saveRecord = function(path) {
+      if (path == "somePath") {
+        return true;
+      }
+    };
     let expectedValue = [
       ["Employee ID", " Beverage", " Quantity", " Date"],
       ["12345", "Watermelon", "1", "2019-11-20T05:29:47.793Z"],
@@ -49,12 +54,21 @@ describe("getTransactionRecord", function() {
     let date = "2019-11-20T05:29:47.793Z";
     let fileContents =
       '{"12345":[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","date":"2019-11-20T05:29:47.793Z"}]}';
-    let actual = getTransactionRecord(argument, date, fileContents);
-    // console.log(actual);
-    // console.log(expectedValue);
+    let actual = getTransactionRecord(
+      argument,
+      date,
+      fileContents,
+      saveRecord,
+      "somePath"
+    );
     assert.deepStrictEqual(actual, expectedValue);
   });
   it("should give last transaction details", function() {
+    const saveRecord = function(path) {
+      if (path == "somePath") {
+        return true;
+      }
+    };
     let expectedValue = [
       ["Transaction Recorded:"],
       ["Employee ID", " Beverage", " Quantity", " Date"],
@@ -70,7 +84,13 @@ describe("getTransactionRecord", function() {
     let fileContents =
       '{"12345":[{"empId":"12345","--beverage":"Watermelon","--qty":"1","time":"2019-11-20T05:29:47.793Z"}]}';
 
-    let actual = getTransactionRecord(argument, date, fileContents);
+    let actual = getTransactionRecord(
+      argument,
+      date,
+      fileContents,
+      saveRecord,
+      "somePath"
+    );
     assert.deepStrictEqual(actual, expectedValue);
   });
 });
