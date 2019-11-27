@@ -1,7 +1,5 @@
 const getQueryArray = function(recordsOfEmployee, quantity) {
   let records = recordsOfEmployee;
-  // console.log(records);
-
   records.push(["Total:" + " " + quantity + " " + "Juices"]);
   const heading = [
     "Employee ID",
@@ -10,7 +8,6 @@ const getQueryArray = function(recordsOfEmployee, quantity) {
     " " + "Date"
   ];
   records.unshift(heading);
-
   return records;
 };
 
@@ -32,7 +29,36 @@ const isOldEmployee = function(empId, empRecords) {
   return empIds.includes(empId);
 };
 
+const processQuery = function(
+  cmdLineArgsObj,
+  contents,
+  funcRef,
+  path,
+  recordsOfEmp,
+  date
+) {
+  let totalQty = 0;
+  recordsOfEmp = getEmployeeRecord(cmdLineArgsObj["--empId"], contents);
+  totalQty = recordsOfEmp.reduce(countQty, 0);
+  // console.log(totalQty);
+
+  recordsOfEmp = recordsOfEmp.map(getListOfDetails);
+  recordsOfEmp = getQueryArray(recordsOfEmp, totalQty);
+  return recordsOfEmp;
+};
+
+const getListOfDetails = function(transactionDetailsOfEmp) {
+  return [
+    transactionDetailsOfEmp["--empId"],
+    transactionDetailsOfEmp["--beverage"],
+    transactionDetailsOfEmp["--qty"],
+    transactionDetailsOfEmp["date"]
+  ];
+};
+
 exports.countQty = countQty;
 exports.getEmployeeRecord = getEmployeeRecord;
 exports.isOldEmployee = isOldEmployee;
 exports.getQueryArray = getQueryArray;
+exports.processQuery = processQuery;
+exports.getListOfDetails = getListOfDetails;

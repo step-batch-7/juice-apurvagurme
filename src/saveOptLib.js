@@ -13,7 +13,14 @@ const getSaveArray = function(recordsOfEmployee) {
   return records;
 };
 
-const saveEmpRecord = function(cmdLineArgsObj, date, contents, funcRef, path) {
+const saveEmpRecord = function(
+  cmdLineArgsObj,
+  contents,
+  funcRef,
+  path,
+  recordsOfEmp,
+  date
+) {
   let parsedContents = JSON.parse(contents);
   let transactionRecord = cmdLineArgsObj;
   let empId = cmdLineArgsObj["--empId"];
@@ -33,6 +40,24 @@ const saveRecordToDatabase = function(path, parsedContents) {
   );
 };
 
+const processSave = function(cmdLineArgsObj, date, contents, funcRef, path) {
+  recordsOfEmp = saveEmpRecord(cmdLineArgsObj, date, contents, funcRef, path);
+  recordsOfEmp = getListOfDetails(recordsOfEmp);
+  recordsOfEmp = getSaveArray(recordsOfEmp);
+  return recordsOfEmp;
+};
+
+const getListOfDetails = function(transactionDetailsOfEmp) {
+  return [
+    transactionDetailsOfEmp["--empId"],
+    transactionDetailsOfEmp["--beverage"],
+    transactionDetailsOfEmp["--qty"],
+    transactionDetailsOfEmp["date"]
+  ];
+};
+
+exports.getListOfDetails = getListOfDetails;
 exports.getSaveArray = getSaveArray;
 exports.saveEmpRecord = saveEmpRecord;
 exports.saveRecordToDatabase = saveRecordToDatabase;
+exports.processSave = processSave;
