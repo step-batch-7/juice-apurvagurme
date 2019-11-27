@@ -30,6 +30,7 @@ const isOldEmployee = function(empId, empRecords) {
 };
 
 const processQuery = function(
+  getListOfDetails,
   cmdLineArgsObj,
   contents,
   funcRef,
@@ -40,20 +41,9 @@ const processQuery = function(
   let totalQty = 0;
   recordsOfEmp = getEmployeeRecord(cmdLineArgsObj["--empId"], contents);
   totalQty = recordsOfEmp.reduce(countQty, 0);
-  // console.log(totalQty);
-
   recordsOfEmp = recordsOfEmp.map(getListOfDetails);
   recordsOfEmp = getQueryArray(recordsOfEmp, totalQty);
   return recordsOfEmp;
-};
-
-const getListOfDetails = function(transactionDetailsOfEmp) {
-  return [
-    transactionDetailsOfEmp["--empId"],
-    transactionDetailsOfEmp["--beverage"],
-    transactionDetailsOfEmp["--qty"],
-    transactionDetailsOfEmp["date"]
-  ];
 };
 
 exports.countQty = countQty;
@@ -61,4 +51,3 @@ exports.getEmployeeRecord = getEmployeeRecord;
 exports.isOldEmployee = isOldEmployee;
 exports.getQueryArray = getQueryArray;
 exports.processQuery = processQuery;
-exports.getListOfDetails = getListOfDetails;

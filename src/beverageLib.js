@@ -36,6 +36,7 @@ const getTransactionRecord = function(
   let recordsOfEmp = [];
   let funcRefAction = getProcess(object, cmdLineArgsObj["action"]);
   recordsOfEmp = funcRefAction(
+    getListOfDetails,
     cmdLineArgsObj,
     contents,
     funcRef,
@@ -47,6 +48,16 @@ const getTransactionRecord = function(
   return recordsOfEmp;
 };
 
+const getListOfDetails = function(transactionDetailsOfEmp) {
+  return [
+    transactionDetailsOfEmp["--empId"],
+    transactionDetailsOfEmp["--beverage"],
+    transactionDetailsOfEmp["--qty"],
+    transactionDetailsOfEmp["date"]
+  ];
+};
+
+exports.getListOfDetails = getListOfDetails;
 exports.getTransactionRecord = getTransactionRecord;
 exports.getString = getString;
 exports.convertArrayToObj = convertArrayToObj;

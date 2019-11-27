@@ -1,6 +1,11 @@
 const assert = require("assert");
 const lib1 = require("../src/beverageLib");
-const { getString, getTransactionRecord, convertArrayToObj } = lib1;
+const {
+  getString,
+  getTransactionRecord,
+  convertArrayToObj,
+  getListOfDetails
+} = lib1;
 
 describe("convertArrayToObj", function() {
   it("should give an object when given action is query", function() {
@@ -87,5 +92,18 @@ describe("getTransactionRecord", function() {
       "somePath"
     );
     assert.deepStrictEqual(actual, expectedValue);
+  });
+});
+
+describe("getListOfDetails", function() {
+  it("should give all the transaction details without ", function() {
+    let expected = ["12345", "Orange", "1", "2019-11-20T05:29:47.793Z"];
+    let actual = getListOfDetails({
+      "--empId": "12345",
+      "--beverage": "Orange",
+      "--qty": "1",
+      date: "2019-11-20T05:29:47.793Z"
+    });
+    assert.deepStrictEqual(actual, expected);
   });
 });

@@ -1,12 +1,6 @@
 const assert = require("assert");
 const lib2 = require("../src/queryOptLib");
-const {
-  countQty,
-  getEmployeeRecord,
-  isOldEmployee,
-  getQueryArray,
-  getListOfDetails
-} = lib2;
+const { countQty, getEmployeeRecord, isOldEmployee, getQueryArray } = lib2;
 
 describe("countQty", function() {
   it("should give a sum of quantities of juices", function() {
@@ -66,19 +60,6 @@ describe("getQueryArray", function() {
       ["11111", "Orange", "3", "2019-11-20T05:29:47.793Z"],
       ["Total:" + " " + 3 + " " + "Juices"]
     ];
-    assert.deepStrictEqual(actual, expected);
-  });
-});
-
-describe("getListOfDetails", function() {
-  it("should give all the transaction details without ", function() {
-    let expected = ["12345", "Orange", "1", "2019-11-20T05:29:47.793Z"];
-    let actual = getListOfDetails({
-      "--empId": "12345",
-      "--beverage": "Orange",
-      "--qty": "1",
-      date: "2019-11-20T05:29:47.793Z"
-    });
     assert.deepStrictEqual(actual, expected);
   });
 });
