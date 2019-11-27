@@ -37,9 +37,9 @@ const processSave = function(
   getListOfDetails,
   cmdLineArgsObj,
   contents,
+  recordsOfEmp,
   funcRef,
   path,
-  recordsOfEmp,
   date
 ) {
   recordsOfEmp = saveEmpRecord(cmdLineArgsObj, date, contents, funcRef, path);

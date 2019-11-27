@@ -18,6 +18,7 @@ const countQty = function(first, listOfRecords) {
 const getEmployeeRecord = function(empId, contents) {
   let empRecords = JSON.parse(contents);
   let records = [];
+  // console.log(empRecords);
   if (isOldEmployee(empId, empRecords)) {
     records = empRecords[empId];
   }
@@ -33,10 +34,7 @@ const processQuery = function(
   getListOfDetails,
   cmdLineArgsObj,
   contents,
-  funcRef,
-  path,
-  recordsOfEmp,
-  date
+  recordsOfEmp
 ) {
   let totalQty = 0;
   recordsOfEmp = getEmployeeRecord(cmdLineArgsObj["--empId"], contents);

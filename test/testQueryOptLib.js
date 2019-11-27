@@ -1,6 +1,34 @@
 const assert = require("assert");
 const lib2 = require("../src/queryOptLib");
-const { countQty, getEmployeeRecord, isOldEmployee, getQueryArray } = lib2;
+const {
+  countQty,
+  getEmployeeRecord,
+  isOldEmployee,
+  getQueryArray,
+  processQuery
+} = lib2;
+const getListOfDetails = require("../src/beverageLib").getListOfDetails;
+
+describe("processQuery", function() {
+  it("should give the details of the given empId", function() {
+    let cmdLineArgsObj = { action: "--query", "--empId": "12345" };
+    let contents =
+      '{"12345":[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","date":"2019-11-20T05:29:47.793Z"}]}';
+    let recordsOfEmp = [];
+    let actual = processQuery(
+      getListOfDetails,
+      cmdLineArgsObj,
+      contents,
+      recordsOfEmp
+    );
+    let expected = [
+      ["Employee ID", " " + "Beverage", " " + "Quantity", " " + "Date"],
+      ["12345", "Watermelon", "1", "2019-11-20T05:29:47.793Z"],
+      ["Total:" + " " + 1 + " " + "Juices"]
+    ];
+    assert.deepStrictEqual(actual, expected);
+  });
+});
 
 describe("countQty", function() {
   it("should give a sum of quantities of juices", function() {

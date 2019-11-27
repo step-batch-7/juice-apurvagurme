@@ -39,9 +39,9 @@ const getTransactionRecord = function(
     getListOfDetails,
     cmdLineArgsObj,
     contents,
+    recordsOfEmp,
     funcRef,
     path,
-    recordsOfEmp,
     date
   );
 
