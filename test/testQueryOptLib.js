@@ -5,15 +5,40 @@ const {
   getEmployeeRecord,
   isOldEmployee,
   getQueryArray,
-  processQuery
+  processQuery,
+  getRecordsOfParticularDate
 } = lib2;
 const getListOfDetails = require("../src/beverageLib").getListOfDetails;
+
+describe("getRecordsOfParticularDate", function() {
+  it("should give records of transaction of the given date", function() {
+    let date = "2019-11-20T05:29:47.793Z";
+    let recordsOfEmp = [
+      {
+        "--beverage": "Orange",
+        "--empId": "11111",
+        "--qty": "2",
+        "--date": "2019-11-20T05:29:47.793Z"
+      }
+    ];
+    let expected = [
+      {
+        "--beverage": "Orange",
+        "--empId": "11111",
+        "--qty": "2",
+        "--date": "2019-11-20T05:29:47.793Z"
+      }
+    ];
+    let actual = getRecordsOfParticularDate(date, recordsOfEmp);
+    assert.deepStrictEqual(actual, expected);
+  });
+});
 
 describe("processQuery", function() {
   it("should give the details of the given empId", function() {
     let cmdLineArgsObj = { action: "--query", "--empId": "12345" };
     let contents =
-      '{"12345":[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","date":"2019-11-20T05:29:47.793Z"}]}';
+      '{"12345":[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]}';
     let recordsOfEmp = [];
     let actual = processQuery(
       getListOfDetails,
@@ -56,15 +81,15 @@ describe("isOldEmployee", function() {
 describe("getEmployeeRecord", function() {
   it("should give employee records when empId is given", function() {
     let fileContents =
-      '{"12345":[{"empId":"12345","--beverage":"Watermelon","--qty":"1","time":"2019-11-20T05:29:47.793Z"}]}';
+      '{"12345":[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]}';
 
     let actual = getEmployeeRecord("12345", fileContents);
     let expected = [
       {
         "--beverage": "Watermelon",
         "--qty": "1",
-        empId: "12345",
-        time: "2019-11-20T05:29:47.793Z"
+        "--empId": "12345",
+        "--date": "2019-11-20T05:29:47.793Z"
       }
     ];
 

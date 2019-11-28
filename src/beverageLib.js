@@ -53,7 +53,7 @@ const getListOfDetails = function(transactionDetailsOfEmp) {
     transactionDetailsOfEmp["--empId"],
     transactionDetailsOfEmp["--beverage"],
     transactionDetailsOfEmp["--qty"],
-    transactionDetailsOfEmp["date"]
+    transactionDetailsOfEmp["--date"]
   ];
 };
 

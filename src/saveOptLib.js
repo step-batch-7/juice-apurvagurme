@@ -21,7 +21,7 @@ const saveEmpRecord = function(cmdLineArgsObj, date, contents, funcRef, path) {
     parsedContents[empId] = [];
   }
   delete transactionRecord["action"];
-  transactionRecord["date"] = date;
+  transactionRecord["--date"] = date;
   parsedContents[empId].push(transactionRecord);
   funcRef(path, parsedContents);
   return transactionRecord;

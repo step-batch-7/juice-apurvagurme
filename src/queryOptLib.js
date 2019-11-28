@@ -18,7 +18,6 @@ const countQty = function(first, listOfRecords) {
 const getEmployeeRecord = function(empId, contents) {
   let empRecords = JSON.parse(contents);
   let records = [];
-  // console.log(empRecords);
   if (isOldEmployee(empId, empRecords)) {
     records = empRecords[empId];
   }
@@ -30,6 +29,18 @@ const isOldEmployee = function(empId, empRecords) {
   return empIds.includes(empId);
 };
 
+const getRecordsOfParticularDate = function(date, recordsOfEmp) {
+  let records = [];
+  let givenDate = date.slice(0, 10);
+  for (const recordOfEmp of recordsOfEmp) {
+    let newDate = recordOfEmp["--date"].slice(0, 10);
+    if (givenDate == newDate) {
+      records.push(recordOfEmp);
+    }
+  }
+  return records;
+};
+
 const processQuery = function(
   getListOfDetails,
   cmdLineArgsObj,
@@ -37,11 +48,15 @@ const processQuery = function(
   recordsOfEmp
 ) {
   let totalQty = 0;
-  recordsOfEmp = getEmployeeRecord(cmdLineArgsObj["--empId"], contents);
-  totalQty = recordsOfEmp.reduce(countQty, 0);
-  recordsOfEmp = recordsOfEmp.map(getListOfDetails);
-  recordsOfEmp = getQueryArray(recordsOfEmp, totalQty);
-  return recordsOfEmp;
+  let records = contents;
+  records = getEmployeeRecord(cmdLineArgsObj["--empId"], contents);
+  if (cmdLineArgsObj.hasOwnProperty("--date")) {
+    records = getRecordsOfParticularDate(cmdLineArgsObj["--date"], records);
+  }
+  totalQty = records.reduce(countQty, 0);
+  records = records.map(getListOfDetails);
+  records = getQueryArray(records, totalQty);
+  return records;
 };
 
 exports.countQty = countQty;
@@ -49,3 +64,4 @@ exports.getEmployeeRecord = getEmployeeRecord;
 exports.isOldEmployee = isOldEmployee;
 exports.getQueryArray = getQueryArray;
 exports.processQuery = processQuery;
+exports.getRecordsOfParticularDate = getRecordsOfParticularDate;

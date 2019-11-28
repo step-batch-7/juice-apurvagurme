@@ -53,7 +53,7 @@ describe("getTransactionRecord", function() {
     let argument = { action: "--query", "--empId": "12345" };
     let date = "2019-11-20T05:29:47.793Z";
     let fileContents =
-      '{"12345":[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","date":"2019-11-20T05:29:47.793Z"}]}';
+      '{"12345":[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]}';
     let actual = getTransactionRecord(
       argument,
       date,
@@ -82,7 +82,7 @@ describe("getTransactionRecord", function() {
     };
     let date = "2019-11-20T05:29:47.793Z";
     let fileContents =
-      '{"12345":[{"empId":"12345","--beverage":"Watermelon","--qty":"1","time":"2019-11-20T05:29:47.793Z"}]}';
+      '{"12345":[{"empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]}';
 
     let actual = getTransactionRecord(
       argument,
@@ -102,7 +102,7 @@ describe("getListOfDetails", function() {
       "--empId": "12345",
       "--beverage": "Orange",
       "--qty": "1",
-      date: "2019-11-20T05:29:47.793Z"
+      "--date": "2019-11-20T05:29:47.793Z"
     });
     assert.deepStrictEqual(actual, expected);
   });
