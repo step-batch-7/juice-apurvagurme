@@ -41,12 +41,7 @@ const getRecordsOfParticularDate = function(date, recordsOfEmp) {
   return records;
 };
 
-const processQuery = function(
-  getListOfDetails,
-  cmdLineArgsObj,
-  contents,
-  recordsOfEmp
-) {
+const processQuery = function(getListOfDetails, cmdLineArgsObj, contents) {
   let totalQty = 0;
   let records = contents;
   records = getEmployeeRecord(cmdLineArgsObj["--empId"], contents);
