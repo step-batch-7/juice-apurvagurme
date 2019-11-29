@@ -1,35 +1,25 @@
-const fs = require("fs");
+const fs = require('fs');
 
 const getSaveArray = function(recordsOfEmployee) {
   let records = [recordsOfEmployee];
-  const heading = [
-    "Employee ID",
-    " " + "Beverage",
-    " " + "Quantity",
-    " " + "Date"
-  ];
+  const heading = ['Employee ID', ' Beverage', ' Quantity', ' Date'].join(',');
   records.unshift(heading);
-  records.unshift(["Transaction Recorded:"]);
+  records.unshift(['Transaction Recorded:']);
   return records;
 };
 
 const saveEmpRecord = function(cmdLineArgsObj, date, contents, funcRef, path) {
   let parsedContents = JSON.parse(contents);
   let transactionRecord = cmdLineArgsObj;
-  let empId = cmdLineArgsObj["--empId"];
-  if (!parsedContents.hasOwnProperty(empId)) {
-    parsedContents[empId] = [];
-  }
-  delete transactionRecord["action"];
-  transactionRecord["--date"] = date;
-  parsedContents[empId].push(transactionRecord);
+  transactionRecord['--date'] = date;
+  parsedContents.push(transactionRecord);
   funcRef(path, parsedContents);
-  return transactionRecord;
+  return parsedContents;
 };
 
 const saveRecordToDatabase = function(path, parsedContents) {
   return JSON.stringify(
-    fs.writeFileSync(path, JSON.stringify(parsedContents), "utf8")
+    fs.writeFileSync(path, JSON.stringify(parsedContents), 'utf8')
   );
 };
 
@@ -42,8 +32,8 @@ const processSave = function(
   path,
   date
 ) {
-  recordsOfEmp = saveEmpRecord(cmdLineArgsObj, date, contents, funcRef, path);
-  recordsOfEmp = getListOfDetails(recordsOfEmp);
+  saveEmpRecord(cmdLineArgsObj, date, contents, funcRef, path);
+  recordsOfEmp = getListOfDetails(cmdLineArgsObj);
   recordsOfEmp = getSaveArray(recordsOfEmp);
   return recordsOfEmp;
 };
