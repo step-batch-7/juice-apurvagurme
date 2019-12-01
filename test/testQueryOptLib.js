@@ -2,33 +2,24 @@ const assert = require('assert');
 const lib2 = require('../src/queryOptLib');
 const {
   countQty,
-  getEmployeeRecord,
   getQueryArray,
   processQuery,
-  getRecordsOfParticularDate
+  getDataOfGivenReq,
+  isGivenDataPresent
 } = lib2;
 const getListOfDetails = require('../src/beverageLib').getListOfDetails;
 
-describe('getRecordsOfParticularDate', function() {
-  it('should give records of transaction of the given date', function() {
-    let date = '2019-11-20T05:29:47.793Z';
-    let recordsOfEmp = [
-      {
-        '--beverage': 'Orange',
-        '--empId': '11111',
-        '--qty': '2',
-        '--date': '2019-11-20T05:29:47.793Z'
-      }
-    ];
-    let expected = [
-      {
-        '--beverage': 'Orange',
-        '--empId': '11111',
-        '--qty': '2',
-        '--date': '2019-11-20T05:29:47.793Z'
-      }
-    ];
-    let actual = getRecordsOfParticularDate(date, recordsOfEmp);
+describe('isGivenDataPresent', function() {
+  it('should give the matching data from array of objects', function() {
+    let givenFieldsAndData = [['--empId', '12345']];
+    let recordedDetail = {
+      '--empId': '12345',
+      '--beverage': 'Watermelon',
+      '--qty': '1',
+      '--date': '2019-11-20T05:29:47.793Z'
+    };
+    let expected = true;
+    let actual = isGivenDataPresent(givenFieldsAndData, recordedDetail);
     assert.deepStrictEqual(actual, expected);
   });
 });
@@ -61,12 +52,12 @@ describe('countQty', function() {
   });
 });
 
-describe('getEmployeeRecord', function() {
+describe('getDataOfGivenReq', function() {
   it('should give employee records when empId is given', function() {
     let contents =
       '[{"--beverage":"Watermelon","--empId":"12345","--qty":"1","action":"--save","--date":"2019-11-20T05:29:47.793Z"}]';
     let cmdLineArgsObj = { action: '--query', '--empId': '12345' };
-    let actual = getEmployeeRecord(contents, cmdLineArgsObj);
+    let actual = getDataOfGivenReq(contents, cmdLineArgsObj);
     let expected = [
       {
         '--beverage': 'Watermelon',
@@ -81,11 +72,49 @@ describe('getEmployeeRecord', function() {
   });
   it('should give empty array if empId is not present in previous record', function() {
     let fileContents = '[]';
-    let actual = getEmployeeRecord(fileContents, {
+    let actual = getDataOfGivenReq(fileContents, {
       actual: '--query',
       '--empId': '12345'
     });
     let expected = [];
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it('should give transaction details of employees used particular empId and beverage', function() {
+    let fileContents =
+      '[{ "--beverage": "Orange", "--qty": "1", "--empId": "111", "--date": "2019-11-20T05:29:47.793Z" },{ "--beverage": "Watermelon", "--qty": "1", "--empId": "111", "--date": "2019-11-20T05:29:47.793Z" }]';
+    let argument = {
+      action: '--query',
+      '--empId': '111',
+      '--beverage': 'Orange'
+    };
+    let expected = [
+      {
+        '--beverage': 'Orange',
+        '--qty': '1',
+        '--empId': '111',
+        '--date': '2019-11-20T05:29:47.793Z'
+      }
+    ];
+    let actual = getDataOfGivenReq(fileContents, argument);
+    assert.deepStrictEqual(actual, expected);
+  });
+  it('should give transaction details of employees used particular beverage', function() {
+    let fileContents =
+      '[{ "--beverage": "Orange", "--qty": "1", "--empId": "111", "--date": "2019-11-20T05:29:47.793Z" },{ "--beverage": "Watermelon", "--qty": "1", "--empId": "111", "--date": "2019-11-20T05:29:47.793Z" }]';
+    let argument = {
+      action: '--query',
+      '--beverage': 'Orange'
+    };
+    let expected = [
+      {
+        '--beverage': 'Orange',
+        '--qty': '1',
+        '--empId': '111',
+        '--date': '2019-11-20T05:29:47.793Z'
+      }
+    ];
+    let actual = getDataOfGivenReq(fileContents, argument);
     assert.deepStrictEqual(actual, expected);
   });
 });

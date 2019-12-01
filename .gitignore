@@ -1,3 +1,9 @@
+appTests/
+coverage/
+src/config.js
+test/testConfig.js
+appTests/req_00_prints_empRecords.test
+appTests/req_01_prints_empRecords.test
 somepath
 failures.txt
 .nyc_output/

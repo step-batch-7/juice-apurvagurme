@@ -51,7 +51,7 @@ describe('getTransactionRecord', function() {
       'Total: 1 Juices'
     ];
     let argument = { action: '--query', '--empId': '12345' };
-    let date = '2019-11-20T05:29:47.793Z';
+    let date = new Date('2019-11-20T05:29:47.793Z');
     let fileContents =
       '[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]';
     let actual = getTransactionRecord(
@@ -70,7 +70,7 @@ describe('getTransactionRecord', function() {
       }
     };
     let expectedValue = [
-      ['Transaction Recorded:'],
+      'Transaction Recorded:',
       'Employee ID, Beverage, Quantity, Date',
       ['12345', 'Watermelon', '1', '2019-11-20T05:29:47.793Z']
     ];
@@ -80,7 +80,7 @@ describe('getTransactionRecord', function() {
       '--empId': '12345',
       '--qty': '1'
     };
-    let date = '2019-11-20T05:29:47.793Z';
+    let date = new Date('2019-11-20T05:29:47.793Z');
     let fileContents =
       '[{"empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]';
     let actual = getTransactionRecord(

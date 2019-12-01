@@ -2,9 +2,10 @@ const fs = require('fs');
 
 const getSaveArray = function(recordsOfEmployee) {
   let records = [recordsOfEmployee];
+  records[0][3] = records[0][3].toJSON();
   const heading = ['Employee ID', ' Beverage', ' Quantity', ' Date'].join(',');
   records.unshift(heading);
-  records.unshift(['Transaction Recorded:']);
+  records.unshift('Transaction Recorded:');
   return records;
 };
 
@@ -18,9 +19,7 @@ const saveEmpRecord = function(cmdLineArgsObj, date, contents, funcRef, path) {
 };
 
 const saveRecordToDatabase = function(path, parsedContents) {
-  return JSON.stringify(
-    fs.writeFileSync(path, JSON.stringify(parsedContents), 'utf8')
-  );
+  fs.writeFileSync(path, JSON.stringify(parsedContents), 'utf8');
 };
 
 const processSave = function(

@@ -1,4 +1,0 @@
-node beverage.js --query --empId 12345
-Employee ID, Beverage, Quantity, Date
-12345,Watermelon,1,2019-11-20T05:29:47.793Z
-Total: 1 Juices

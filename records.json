@@ -1,107 +1,20 @@
 [
   {
-    "--beverage": "Orange",
     "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:09:09.804Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:11:03.988Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:12:05.583Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:13:22.868Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:13:50.116Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:14:16.526Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:15:51.271Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:16:54.030Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T12:17:57.703Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T16:24:02.173Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T16:26:15.252Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T16:27:13.508Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "11111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T17:10:05.668Z"
-  },
-  {
-    "--beverage": "Orange",
-    "--empId": "111",
-    "--qty": "2",
-    "action": "--save",
-    "--date": "2019-11-28T17:40:46.541Z"
-  },
-  {
     "--beverage": "Watermelon",
-    "--empId": "111",
-    "--qty": "2",
+    "--qty": "1",
+    "--date": "2019-11-28T12:00:00.000Z"
+  },
+  {
+    "--beverage": "Orange",
+    "--empId": "11111",
+    "--qty": "1",
     "action": "--save",
-    "--date": "2019-11-28T17:40:58.714Z"
+    "--date": "2019-11-28T12:00:00.000Z"
+  },
+  {
+    "--empId": "12345",
+    "action": "--save",
+    "--date": "2019-12-01T07:22:27.587Z"
   }
 ]
