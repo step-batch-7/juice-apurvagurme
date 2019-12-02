@@ -1,40 +1,30 @@
 const assert = require('assert');
 const lib1 = require('../src/beverageLib');
 const {
-  getString,
   getTransactionRecord,
   convertArrayToObj,
-  getListOfDetails
+  getListOfDetails,
+  getActionFunc
 } = lib1;
+const queryLib = require('../src/queryOptLib');
+const { processQuery } = queryLib;
+const saveOptLib = require('../src/saveOptLib');
+const { processSave } = saveOptLib;
 
 describe('convertArrayToObj', function() {
   it('should give an object when given action is query', function() {
-    let expectedValue = { action: '--query', '--empId': '11111' };
+    let expectedValue = { '--empId': '11111' };
     assert.deepStrictEqual(
       convertArrayToObj(['--query', '--empId', '11111']),
       expectedValue
     );
   });
   it('should give an object when given action is save', function() {
-    let expectedValue = { action: '--save', '--empId': '11111' };
+    let expectedValue = { '--empId': '11111' };
     assert.deepStrictEqual(
       convertArrayToObj(['--save', '--empId', '11111']),
       expectedValue
     );
-  });
-});
-
-describe('getString', function() {
-  it('should give a joined string when an array of string is given', function() {
-    let expectedValue = 'a,b,c\nd,e';
-    let actual = getString(
-      [
-        ['a', 'b', 'c'],
-        ['d', 'e']
-      ],
-      2
-    );
-    assert.deepStrictEqual(actual, expectedValue);
   });
 });
 
@@ -50,7 +40,7 @@ describe('getTransactionRecord', function() {
       ['12345', 'Watermelon', '1', '2019-11-20T05:29:47.793Z'],
       'Total: 1 Juices'
     ];
-    let argument = { action: '--query', '--empId': '12345' };
+    let argument = ['--query', '--empId', '12345'];
     let date = new Date('2019-11-20T05:29:47.793Z');
     let fileContents =
       '[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]';
@@ -74,12 +64,15 @@ describe('getTransactionRecord', function() {
       'Employee ID, Beverage, Quantity, Date',
       ['12345', 'Watermelon', '1', '2019-11-20T05:29:47.793Z']
     ];
-    let argument = {
-      action: '--save',
-      '--beverage': 'Watermelon',
-      '--empId': '12345',
-      '--qty': '1'
-    };
+    let argument = [
+      '--save',
+      '--beverage',
+      'Watermelon',
+      '--empId',
+      '12345',
+      '--qty',
+      '1'
+    ];
     let date = new Date('2019-11-20T05:29:47.793Z');
     let fileContents =
       '[{"empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]';
@@ -104,5 +97,17 @@ describe('getListOfDetails', function() {
       '--date': '2019-11-20T05:29:47.793Z'
     });
     assert.deepStrictEqual(actual, expected);
+  });
+});
+describe('getActionFunc', function() {
+  it('should give the function reference of desired action', function() {
+    let actual = getActionFunc('--query');
+    let expected = processQuery;
+    assert.strictEqual(actual, expected);
+  });
+  it('should give the function reference of save function process', function() {
+    let actual = getActionFunc('--save');
+    let expected = processSave;
+    assert.strictEqual(actual, expected);
   });
 });

@@ -2,40 +2,27 @@ const queryLib = require('./queryOptLib');
 const { processQuery } = queryLib;
 const saveOptLib = require('./saveOptLib');
 const { processSave } = saveOptLib;
-const getProcess = require('./genericUtils').getProcess;
-
+const genericUtils = require('./genericUtils');
+const { getProcess, makeArrayToObj } = genericUtils;
 const convertArrayToObj = function(cmdLineArgs) {
   let object = {};
   let args = cmdLineArgs;
   args = args.slice(1);
-  for (let index = 0; index < args.length; index = index + 2) {
-    object[args[index]] = args[index + 1];
-  }
-  if (cmdLineArgs.includes('--save')) {
-    object['action'] = '--save';
-  }
-  if (cmdLineArgs.includes('--query')) {
-    object['action'] = '--query';
-  }
+  object = makeArrayToObj(args);
   return object;
 };
 
-const getString = function(recordOfTransaction) {
-  let records = recordOfTransaction;
-  return records.join('\n');
-};
-
 const getTransactionRecord = function(
-  cmdLineArgsObj,
+  cmdLineArgs,
   date,
   contents,
   funcRef,
   path
 ) {
-  const object = { '--query': processQuery, '--save': processSave };
   let recordsOfEmp = [];
-  let funcRefAction = getProcess(object, cmdLineArgsObj['action']);
-  recordsOfEmp = funcRefAction(
+  const actionRef = getActionFunc(cmdLineArgs[0]);
+  const cmdLineArgsObj = convertArrayToObj(cmdLineArgs);
+  recordsOfEmp = actionRef(
     getListOfDetails,
     cmdLineArgsObj,
     contents,
@@ -44,8 +31,13 @@ const getTransactionRecord = function(
     path,
     date
   );
-
   return recordsOfEmp;
+};
+
+const getActionFunc = function(action) {
+  const object = { '--query': processQuery, '--save': processSave };
+  let funcRefAction = getProcess(object, action, defaultAction);
+  return funcRefAction;
 };
 
 const getListOfDetails = function(transactionDetailsOfEmp) {
@@ -57,7 +49,11 @@ const getListOfDetails = function(transactionDetailsOfEmp) {
   ];
 };
 
+const defaultAction = function() {
+  return [];
+};
+
 exports.getListOfDetails = getListOfDetails;
 exports.getTransactionRecord = getTransactionRecord;
-exports.getString = getString;
 exports.convertArrayToObj = convertArrayToObj;
+exports.getActionFunc = getActionFunc;
