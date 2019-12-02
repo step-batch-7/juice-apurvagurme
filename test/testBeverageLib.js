@@ -41,7 +41,9 @@ describe('getTransactionRecord', function() {
       'Total: 1 Juices'
     ];
     let argument = ['--query', '--empId', '12345'];
-    let date = new Date('2019-11-20T05:29:47.793Z');
+    const date = function() {
+      return new Date('2019-11-20T05:29:47.793Z');
+    };
     let fileContents =
       '[{"--empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]';
     let actual = getTransactionRecord(
@@ -55,16 +57,17 @@ describe('getTransactionRecord', function() {
   });
   it('should give last transaction details', function() {
     const saveRecord = function(path) {
-      if (path == 'somePath') {
-        return true;
-      }
+      assert.strictEqual(path, 'somePath');
+    };
+    const date = function() {
+      return new Date('2019-11-20T05:29:47.793Z');
     };
     let expectedValue = [
       'Transaction Recorded:',
       'Employee ID, Beverage, Quantity, Date',
       ['12345', 'Watermelon', '1', '2019-11-20T05:29:47.793Z']
     ];
-    let argument = [
+    let cmdLineArgs = [
       '--save',
       '--beverage',
       'Watermelon',
@@ -73,11 +76,10 @@ describe('getTransactionRecord', function() {
       '--qty',
       '1'
     ];
-    let date = new Date('2019-11-20T05:29:47.793Z');
     let fileContents =
       '[{"empId":"12345","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]';
     let actual = getTransactionRecord(
-      argument,
+      cmdLineArgs,
       date,
       fileContents,
       saveRecord,
@@ -99,6 +101,7 @@ describe('getListOfDetails', function() {
     assert.deepStrictEqual(actual, expected);
   });
 });
+
 describe('getActionFunc', function() {
   it('should give the function reference of desired action', function() {
     let actual = getActionFunc('--query');

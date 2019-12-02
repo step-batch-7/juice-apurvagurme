@@ -10,10 +10,14 @@ const countQty = function(first, listOfRecords) {
   return +listOfRecords['--qty'] + first;
 };
 
+const validateQueryArgs = function(cmdLineArgsObj) {
+  const mandatoryOpts = ['--beverage', '--qty', '--empId', '--date'];
+  return mandatoryOpts.some(key => cmdLineArgsObj.hasOwnProperty(key));
+};
+
 const getDataOfGivenReq = function(contents, cmdLineArgsObj) {
   const fileContents = JSON.parse(contents);
   let givenFieldsAndData = cmdLineArgsObj;
-  delete givenFieldsAndData.action;
   givenFieldsAndData = Object.entries(givenFieldsAndData);
   const requiredDetails = fileContents.filter(
     isGivenDataPresent.bind(null, givenFieldsAndData)
@@ -34,6 +38,10 @@ const isGivenDataPresent = function(givenFieldsAndData, recordedDetail) {
 const processQuery = function(getListOfDetails, cmdLineArgsObj, contents) {
   let totalQty = 0;
   let records = contents;
+  let recordsOfEmp = [];
+  if (!validateQueryArgs(cmdLineArgsObj)) {
+    return recordsOfEmp;
+  }
   records = getDataOfGivenReq(contents, cmdLineArgsObj);
   totalQty = records.reduce(countQty, 0);
   records = records.map(getListOfDetails);
@@ -46,3 +54,4 @@ exports.getQueryArray = getQueryArray;
 exports.processQuery = processQuery;
 exports.getDataOfGivenReq = getDataOfGivenReq;
 exports.isGivenDataPresent = isGivenDataPresent;
+exports.validateQueryArgs = validateQueryArgs;

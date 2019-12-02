@@ -4,6 +4,7 @@ const saveOptLib = require('./saveOptLib');
 const { processSave } = saveOptLib;
 const genericUtils = require('./genericUtils');
 const { getProcess, makeArrayToObj } = genericUtils;
+
 const convertArrayToObj = function(cmdLineArgs) {
   let object = {};
   let args = cmdLineArgs;
@@ -19,14 +20,12 @@ const getTransactionRecord = function(
   funcRef,
   path
 ) {
-  let recordsOfEmp = [];
   const actionRef = getActionFunc(cmdLineArgs[0]);
   const cmdLineArgsObj = convertArrayToObj(cmdLineArgs);
   recordsOfEmp = actionRef(
     getListOfDetails,
     cmdLineArgsObj,
     contents,
-    recordsOfEmp,
     funcRef,
     path,
     date

@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const getSaveArray = function(recordsOfEmployee) {
   let records = [recordsOfEmployee];
   records[0][3] = records[0][3].toJSON();
@@ -12,25 +10,29 @@ const getSaveArray = function(recordsOfEmployee) {
 const saveEmpRecord = function(cmdLineArgsObj, date, contents, funcRef, path) {
   let parsedContents = JSON.parse(contents);
   let transactionRecord = cmdLineArgsObj;
-  transactionRecord['--date'] = date;
+  transactionRecord['--date'] = date();
   parsedContents.push(transactionRecord);
   funcRef(path, parsedContents);
   return parsedContents;
 };
 
-const saveRecordToDatabase = function(path, parsedContents) {
-  fs.writeFileSync(path, JSON.stringify(parsedContents), 'utf8');
+const validateSaveArgs = function(cmdLineArgsObj) {
+  const mandatoryOpts = ['--beverage', '--qty', '--empId'];
+  return mandatoryOpts.every(key => cmdLineArgsObj.hasOwnProperty(key));
 };
 
 const processSave = function(
   getListOfDetails,
   cmdLineArgsObj,
   contents,
-  recordsOfEmp,
   funcRef,
   path,
   date
 ) {
+  let recordsOfEmp = [];
+  if (!validateSaveArgs(cmdLineArgsObj)) {
+    return recordsOfEmp;
+  }
   saveEmpRecord(cmdLineArgsObj, date, contents, funcRef, path);
   recordsOfEmp = getListOfDetails(cmdLineArgsObj);
   recordsOfEmp = getSaveArray(recordsOfEmp);
@@ -39,5 +41,5 @@ const processSave = function(
 
 exports.getSaveArray = getSaveArray;
 exports.saveEmpRecord = saveEmpRecord;
-exports.saveRecordToDatabase = saveRecordToDatabase;
 exports.processSave = processSave;
+exports.validateSaveArgs = validateSaveArgs;

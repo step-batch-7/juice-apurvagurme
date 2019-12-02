@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const getProcess = function(object, action, defaultValue) {
   if (object.hasOwnProperty(action)) {
     return object[action];
@@ -19,6 +21,11 @@ const makeArrayToObj = function(array) {
   return Object.assign(prevObj, makeArrayToObj(array.slice(2)));
 };
 
+const saveRecordToDatabase = function(path, parsedContents) {
+  fs.writeFileSync(path, JSON.stringify(parsedContents), 'utf8');
+};
+
+exports.saveRecordToDatabase = saveRecordToDatabase;
 exports.makeArrayToObj = makeArrayToObj;
 exports.getString = getString;
 exports.getProcess = getProcess;
