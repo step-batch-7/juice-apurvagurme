@@ -59,16 +59,24 @@ describe('processQuery', function() {
     let expected = [
       'Employee ID, Beverage, Quantity, Date',
       ['12345', 'Watermelon', '1', '2019-11-20T05:29:47.793Z'],
-      'Total: 1 Juices'
+      'Total: 1 Juice'
     ];
     assert.deepStrictEqual(actual, expected);
   });
-  it('should give the details of the given empId', function() {
+  it('should give the only header and footer if given empId is not present in records', function() {
     let cmdLineArgsObj = { '--empId': '12345' };
     let contents =
       '[{"--empId":"1234","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]';
     let actual = processQuery(getListOfDetails, cmdLineArgsObj, contents);
     let expected = ['Employee ID, Beverage, Quantity, Date', 'Total: 0 Juices'];
+    assert.deepStrictEqual(actual, expected);
+  });
+  it('should give empty array if given option is invalid', function() {
+    let cmdLineArgsObj = { '--empI': '12345' };
+    let contents =
+      '[{"--empId":"1234","--beverage":"Watermelon","--qty":"1","--date":"2019-11-20T05:29:47.793Z"}]';
+    let actual = processQuery(getListOfDetails, cmdLineArgsObj, contents);
+    let expected = [];
     assert.deepStrictEqual(actual, expected);
   });
 });

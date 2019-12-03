@@ -95,7 +95,7 @@ describe('saveEmpRecord', function() {
       }
     };
     const date = function() {
-      return '2019-11-20T05:29:47.793Z';
+      return new Date('2019-11-20T05:29:47.793Z');
     };
     let fileContents = '[]';
     let cmdLineArgsObj = {
@@ -130,7 +130,7 @@ describe('getSaveArray', function() {
       '11111',
       'Orange',
       '1',
-      new Date('2019-11-30T08:33:18.325Z')
+      '2019-11-30T08:33:18.325Z'
     ]);
     const expected = [
       'Transaction Recorded:',

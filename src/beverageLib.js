@@ -5,14 +5,6 @@ const { processSave } = saveOptLib;
 const genericUtils = require('./genericUtils');
 const { getProcess, makeArrayToObj } = genericUtils;
 
-const convertArrayToObj = function(cmdLineArgs) {
-  let object = {};
-  let args = cmdLineArgs;
-  args = args.slice(1);
-  object = makeArrayToObj(args);
-  return object;
-};
-
 const getTransactionRecord = function(
   cmdLineArgs,
   date,
@@ -21,10 +13,11 @@ const getTransactionRecord = function(
   path
 ) {
   const actionRef = getActionFunc(cmdLineArgs[0]);
-  const cmdLineArgsObj = convertArrayToObj(cmdLineArgs);
+  let args = cmdLineArgs.slice(1);
+  args = makeArrayToObj(args);
   recordsOfEmp = actionRef(
     getListOfDetails,
-    cmdLineArgsObj,
+    args,
     contents,
     funcRef,
     path,
@@ -40,12 +33,9 @@ const getActionFunc = function(action) {
 };
 
 const getListOfDetails = function(transactionDetailsOfEmp) {
-  return [
-    transactionDetailsOfEmp['--empId'],
-    transactionDetailsOfEmp['--beverage'],
-    transactionDetailsOfEmp['--qty'],
-    transactionDetailsOfEmp['--date']
-  ];
+  return '--empId,--beverage,--qty,--date'
+    .split(',')
+    .map(key => transactionDetailsOfEmp[key]);
 };
 
 const defaultAction = function() {
@@ -54,5 +44,5 @@ const defaultAction = function() {
 
 exports.getListOfDetails = getListOfDetails;
 exports.getTransactionRecord = getTransactionRecord;
-exports.convertArrayToObj = convertArrayToObj;
 exports.getActionFunc = getActionFunc;
+exports.defaultAction = defaultAction;

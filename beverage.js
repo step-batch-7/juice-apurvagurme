@@ -3,14 +3,15 @@ const getTransactionRecord = require('./src/beverageLib.js')
 const config = require('./src/config');
 const { timeStamp, getDataStorePath } = config;
 const genericUtils = require('./src/genericUtils');
-const { saveRecordToDatabase, getString } = genericUtils;
+const { saveRecordToDatabase, getString, readFile } = genericUtils;
 const fs = require('fs');
+let { readFileSync, existsSync } = fs;
 
 const main = function() {
   const cmdLineArgs = process.argv.slice(2);
   const date = timeStamp.bind(null, process.env);
   const path = getDataStorePath(process.env);
-  const contents = fs.readFileSync(path, 'utf8');
+  const contents = readFile(path, readFileSync, existsSync);
   let recordOfEmployee = getTransactionRecord(
     cmdLineArgs,
     date,

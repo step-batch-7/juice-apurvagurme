@@ -2,29 +2,20 @@ const assert = require('assert');
 const lib1 = require('../src/beverageLib');
 const {
   getTransactionRecord,
-  convertArrayToObj,
   getListOfDetails,
-  getActionFunc
+  getActionFunc,
+  defaultAction
 } = lib1;
 const queryLib = require('../src/queryOptLib');
 const { processQuery } = queryLib;
 const saveOptLib = require('../src/saveOptLib');
 const { processSave } = saveOptLib;
 
-describe('convertArrayToObj', function() {
-  it('should give an object when given action is query', function() {
-    let expectedValue = { '--empId': '11111' };
-    assert.deepStrictEqual(
-      convertArrayToObj(['--query', '--empId', '11111']),
-      expectedValue
-    );
-  });
-  it('should give an object when given action is save', function() {
-    let expectedValue = { '--empId': '11111' };
-    assert.deepStrictEqual(
-      convertArrayToObj(['--save', '--empId', '11111']),
-      expectedValue
-    );
+describe('defaultAction', function() {
+  it('should give default value as an empty array', function() {
+    let actual = defaultAction();
+    let expected = [];
+    assert.deepStrictEqual(actual, expected);
   });
 });
 
@@ -38,7 +29,7 @@ describe('getTransactionRecord', function() {
     let expectedValue = [
       'Employee ID, Beverage, Quantity, Date',
       ['12345', 'Watermelon', '1', '2019-11-20T05:29:47.793Z'],
-      'Total: 1 Juices'
+      'Total: 1 Juice'
     ];
     let argument = ['--query', '--empId', '12345'];
     const date = function() {

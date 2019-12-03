@@ -1,4 +1,4 @@
-const fs = require('fs');
+fs = require('fs');
 
 const getProcess = function(object, action, defaultValue) {
   if (object.hasOwnProperty(action)) {
@@ -8,17 +8,22 @@ const getProcess = function(object, action, defaultValue) {
 };
 
 const getString = function(recordOfTransaction) {
-  let records = recordOfTransaction;
-  return records.join('\n');
+  return recordOfTransaction.join('\n');
 };
 
-const makeArrayToObj = function(array) {
+const makeArrayToObj = function(array, prevObj = {}) {
   if (array.length == 0) {
     return {};
   }
-  let prevObj = {};
   prevObj[array[0]] = array[1];
   return Object.assign(prevObj, makeArrayToObj(array.slice(2)));
+};
+
+const readFile = function(path, readFunc, isExistFunc) {
+  if (isExistFunc(path)) {
+    return readFunc(path, 'utf8');
+  }
+  return '[]';
 };
 
 const saveRecordToDatabase = function(path, parsedContents) {
@@ -29,3 +34,4 @@ exports.saveRecordToDatabase = saveRecordToDatabase;
 exports.makeArrayToObj = makeArrayToObj;
 exports.getString = getString;
 exports.getProcess = getProcess;
+exports.readFile = readFile;

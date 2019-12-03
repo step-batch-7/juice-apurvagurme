@@ -1,6 +1,24 @@
 const genericUtils = require('../src/genericUtils');
-const { makeArrayToObj, getProcess, getString } = genericUtils;
+const { makeArrayToObj, getProcess, getString, readFile } = genericUtils;
 const assert = require('assert');
+
+describe('readFile', function() {
+  const isExistFunc = function(path) {
+    return path === 'path';
+  };
+  const readFunc1 = function(path, encoding) {
+    return '';
+  };
+  const readFunc2 = function(path, encoding) {
+    return '[]';
+  };
+  it('should read the contents of the file in the given path', function() {
+    assert.strictEqual(readFile('path', readFunc1, isExistFunc), '');
+  });
+  it('should return an string of empty array if the file does not exist', function() {
+    assert.strictEqual(readFile('otherPath', readFunc2, isExistFunc), '[]');
+  });
+});
 
 describe('getProcess', function() {
   it('should give function Reference of the process to perform when action is query', function() {

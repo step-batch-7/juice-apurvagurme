@@ -1,6 +1,5 @@
 const getSaveArray = function(recordsOfEmployee) {
   let records = [recordsOfEmployee];
-  records[0][3] = records[0][3].toJSON();
   const heading = ['Employee ID', ' Beverage', ' Quantity', ' Date'].join(',');
   records.unshift(heading);
   records.unshift('Transaction Recorded:');
@@ -10,7 +9,7 @@ const getSaveArray = function(recordsOfEmployee) {
 const saveEmpRecord = function(cmdLineArgsObj, date, contents, funcRef, path) {
   let parsedContents = JSON.parse(contents);
   let transactionRecord = cmdLineArgsObj;
-  transactionRecord['--date'] = date();
+  transactionRecord['--date'] = date().toJSON();
   parsedContents.push(transactionRecord);
   funcRef(path, parsedContents);
   return parsedContents;
@@ -29,9 +28,8 @@ const processSave = function(
   path,
   date
 ) {
-  let recordsOfEmp = [];
   if (!validateSaveArgs(cmdLineArgsObj)) {
-    return recordsOfEmp;
+    return [];
   }
   saveEmpRecord(cmdLineArgsObj, date, contents, funcRef, path);
   recordsOfEmp = getListOfDetails(cmdLineArgsObj);

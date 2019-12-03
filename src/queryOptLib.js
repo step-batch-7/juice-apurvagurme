@@ -1,7 +1,7 @@
 const getQueryArray = function(recordsOfEmployee, quantity) {
   let records = recordsOfEmployee;
-  records.push(['Total: ', quantity, ' Juices'].join(''));
-  const heading = ['Employee ID', ' Beverage', ' Quantity', ' Date'].join(',');
+  records.push(`Total: ${quantity} Juice${quantity == 1 ? '' : 's'}`);
+  const heading = `Employee ID, Beverage, Quantity, Date`;
   records.unshift(heading);
   return records;
 };
@@ -26,21 +26,18 @@ const getDataOfGivenReq = function(contents, cmdLineArgsObj) {
 };
 
 const isGivenDataPresent = function(givenFieldsAndData, recordedDetail) {
-  let isMatched = true;
   let record = { ...recordedDetail };
   record['--date'] = record['--date'].split('T', 1);
-  for (const givenField of givenFieldsAndData) {
-    isMatched = isMatched && givenField[1] == record[givenField[0]];
-  }
-  return isMatched;
+  return givenFieldsAndData.every(
+    givenField => givenField[1] == record[givenField[0]]
+  );
 };
 
 const processQuery = function(getListOfDetails, cmdLineArgsObj, contents) {
   let totalQty = 0;
   let records = contents;
-  let recordsOfEmp = [];
   if (!validateQueryArgs(cmdLineArgsObj)) {
-    return recordsOfEmp;
+    return [];
   }
   records = getDataOfGivenReq(contents, cmdLineArgsObj);
   totalQty = records.reduce(countQty, 0);
